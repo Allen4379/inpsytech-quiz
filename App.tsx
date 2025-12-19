@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { QUESTIONS } from './constants';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import { QuizScreen } from './components/QuizScreen';
 import { CouponScreen } from './components/CouponScreen';
 
 function App() {
-  const [step, setStep] = useState<number>(0);
+  // Initialize state from localStorage to persist progress across refreshes
+  const [step, setStep] = useState<number>(() => {
+    const savedStep = localStorage.getItem('inpsytech_movie_step');
+    return savedStep ? parseInt(savedStep, 10) : 0;
+  });
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('inpsytech_movie_step', step.toString());
+  }, [step]);
 
   const handleStart = () => {
     setStep(1);
@@ -17,6 +26,7 @@ function App() {
 
   const handleReset = () => {
     setStep(0);
+    // localStorage will be updated by the useEffect
   };
 
   const renderContent = () => {

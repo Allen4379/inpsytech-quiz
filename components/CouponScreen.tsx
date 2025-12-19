@@ -21,6 +21,17 @@ export const CouponScreen: React.FC<CouponScreenProps> = ({ onReset }) => {
     return date.toLocaleTimeString('zh-TW', { hour12: false });
   };
 
+  const handleSafeReset = () => {
+    // Confirmation dialog to prevent accidental resets
+    const isConfirmed = window.confirm(
+      "⚠️ 警告：確定要重新開始嗎？\n\n這將會清除目前的兌換券畫面。\n如果尚未兌換，請勿執行此操作。\n\n(僅供工作人員或測試使用)"
+    );
+    
+    if (isConfirmed) {
+      onReset();
+    }
+  };
+
   return (
     <div className="flex flex-col items-center animate-fade-in w-full h-full justify-start pt-2">
       
@@ -177,7 +188,7 @@ export const CouponScreen: React.FC<CouponScreenProps> = ({ onReset }) => {
       {/* Reset Link (Bottom) */}
       <div className="mt-2 shrink-0">
         <button 
-          onClick={onReset}
+          onClick={handleSafeReset}
           className="text-xs text-white/20 hover:text-white/50 transition-colors py-2"
         >
           重新開始 (Staff Only)
